@@ -1,13 +1,27 @@
-import { Outlet, Link, useLocation } from 'react-router-dom'
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 export default function Layout() {
   const location = useLocation()
   const isActive = (path) => (location.pathname === path ? 'active' : '')
+  const { signOut } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    await signOut()
+    navigate('/login')
+  }
 
   return (
     <div className="layout">
-      <header className="topbar">
+      <header className="topbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <strong>Twincom Smart Lens</strong>
+        <button 
+          onClick={handleLogout}
+          style={{ background: 'transparent', color: 'white', border: '1px solid white', padding: '4px 8px', borderRadius: 4, cursor: 'pointer', fontSize: 12 }}
+        >
+          Logout
+        </button>
       </header>
 
       <main className="content">
